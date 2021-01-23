@@ -8,7 +8,7 @@ Konfigurační soubor je config.js
 
 Vizuální prostředí, využité filtry a barevné označení
 ![IMG](https://ctrlv.cz/shots/2021/01/23/MMiX.png)
-- Žlutě jsou vyznačena stejná přijímení
+- Žlutě jsou vyznačena stejná příjmení
 - Zeleně jsou vyznačeni řidiči dle filtru 1 - modroocí řidiči, kteří mají alespoň jedno auto s hybridním nebo elektrickým motorem
 - Červeně jsou vyznačeni řidiči dle filtru 2 - řidiči, kteří mají více než jedno auto a všechna auta mají stejný typ motoru
 
