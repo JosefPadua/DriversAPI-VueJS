@@ -260,7 +260,7 @@
         <b-card
           bg-variant="secondary"
           text-variant="white"
-          header="Stejná přijímení"
+          header="Stejná příjmení"
           class="text-center"
           v-if="outputData.sameLastnames"
         >
