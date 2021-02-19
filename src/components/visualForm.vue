@@ -30,7 +30,19 @@
         :key="i"
         style="display: inline-block"
       >
-        <b-card stretched-link class="text-center w-100 driver" :class="outputData ? outputData.driversFilter1.includes(drivera.id) ? 'border border-success' : null || outputData.driversFilter2.includes(drivera.id) ? 'border border-danger' :null : null">
+        <b-card
+          stretched-link
+          class="text-center w-100 driver"
+          :class="
+            outputData
+              ? outputData.driversFilter1.includes(drivera.id)
+                ? 'border border-success'
+                : null || outputData.driversFilter2.includes(drivera.id)
+                ? 'border border-danger'
+                : null
+              : null
+          "
+        >
           <header>
             {{ drivera.driver.firstName }}
             <div
@@ -348,16 +360,22 @@ export default {
   methods: {
     getVehicleType(vehTypeID) {
       let text = "";
-      this.vehicleBrands.forEach((brand) => {
-        if (brand.value === vehTypeID) text = brand.text;
-      });
+      // this.vehicleBrands.forEach((brand) => {
+      //   if (brand.value === vehTypeID) text = brand.text;
+      // });
+      this.vehicleBrands
+        .find((x) => x.value === vehTypeID)
+        .map((x) => (text = x.text));
       return text;
     },
     getEngineType(engTypeID) {
       let text = "";
-      this.vehicleEngines.forEach((engine) => {
-        if (engine.value === engTypeID) text = engine.text;
-      });
+      // this.vehicleEngines.forEach((engine) => {
+      //   if (engine.value === engTypeID) text = engine.text;
+      // });
+      this.vehicleEngines
+        .find((x) => x.value === engTypeID)
+        .map((x) => (text = x.text));
       return text;
     },
     addVeh() {
@@ -393,9 +411,10 @@ export default {
     },
     getBiggestID() {
       let ids = [];
-      this.drivers.forEach((driver) => {
-        ids.push(driver.id);
-      });
+      // this.drivers.forEach((driver) => {
+      //   ids.push(driver.id);
+      // });
+      this.drivers.map((x) => ids.push(x.id));
       return Math.max.apply(null, ids);
     },
     clearForm() {
@@ -420,25 +439,24 @@ export default {
       this.drivers.length === 1 ? (this.drivers = []) : null;
       const index = this.drivers.findIndex((driver) => driver.id === id);
       this.drivers.splice(index, 1);
-      this.drivers.forEach((driver) => {
-        if (driver.id > id) driver.id -= 1;
-      });
+      // this.drivers.forEach((driver) => {
+      //   if (driver.id > id) driver.id -= 1;
+      // });
+      this.drivers.find((x) => x > id).map((x) => (x.driver -= 1));
     },
-    postApi() {
+    async postApi() {
       if (this.drivers.length > 0) {
         const inputData = JSON.stringify(this.drivers);
         this.working = true;
-        axios
-          .post(this.url, inputData, {
+        try {
+          const resp = await axios.post(this.url, inputData, {
             headers: { "Content-Type": "application/json" },
-          })
-          .then((res) => {
-            this.outputData = res.data.data;
-          })
-          .catch((err) => {
-            this.outputData = err;
-          })
-          .finally(() => (this.working = false));
+          });
+          this.outputData = resp.data.data;
+          this.working = false;
+        } catch (err) {
+          this.outputData = err;
+        }
       }
     },
     formatNames(files) {
